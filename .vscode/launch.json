@@ -3,7 +3,7 @@
         {
             "showDevDebugOutput": true,
             "cwd": "${workspaceRoot}",
-            "executable": "./build/simulink_stm32_comm.elf",
+            "executable": "./build/SPI_encoder_reporter.elf",
             "name": "Debug STM32",
             "request": "launch",
             "type": "cortex-debug",

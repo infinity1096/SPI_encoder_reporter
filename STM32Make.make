@@ -22,7 +22,7 @@ TARGET = SPI_encoder_reporter
 # debug build?
 DEBUG = 1
 # optimization
-OPT = -Og
+OPT = -O0
 
 
 #######################################
@@ -75,7 +75,9 @@ Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
 
 
 CPP_SOURCES = \
-Quadrature/hardware/hardware_interface.cpp \
+Quadrature/hardware/board.cpp \
+Quadrature/hardware/encoder.cpp \
+Quadrature/hardware/stm32/stm32gpio.cpp \
 Quadrature/main.cpp
 
 
@@ -142,6 +144,7 @@ AS_INCLUDES = \
 C_INCLUDES =  \
 -IBoard/Inc \
 -ICore/Inc \
+-IDrivers/CMSIS/DSP/Include \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
 -IDrivers/STM32F4xx_HAL_Driver/Inc \
@@ -151,6 +154,7 @@ C_INCLUDES =  \
 -IMiddlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc \
 -IMiddlewares/ST/STM32_USB_Device_Library/Core/Inc \
 -IQuadrature/hardware \
+-IQuadrature/hardware/stm32 \
 -IUSB_DEVICE/App \
 -IUSB_DEVICE/Target
 
