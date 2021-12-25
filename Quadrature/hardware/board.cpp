@@ -6,11 +6,11 @@ extern "C" void SystemClock_Config(void);
 void boardInit(){
   HAL_Init();
   SystemClock_Config();
+  MX_DMA_Init();  // DMA should be initialized before SPI using DMA !!
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   MX_TIM3_Init();
   MX_SPI1_Init();
-  MX_DMA_Init();
   MX_TIM4_Init();
 }
 
@@ -29,14 +29,8 @@ extern "C" void updateEncoder(){
     enc_0.initiateEncoderRead();
 }
 
-
-extern "C" void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi){
-  if (hspi == &hspi1){
-    enc_0.encoderReadCompleteCallback();
-  }
-}
-
 extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
+  int a = 0;
   if (hspi == &hspi1){
     enc_0.encoderReadCompleteCallback();
   }
