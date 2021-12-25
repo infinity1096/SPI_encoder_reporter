@@ -78,6 +78,7 @@ CPP_SOURCES = \
 Quadrature/hardware/board.cpp \
 Quadrature/hardware/encoder.cpp \
 Quadrature/hardware/stm32/stm32gpio.cpp \
+Quadrature/hardware/stm32/usb_vcp.cpp \
 Quadrature/main.cpp
 
 

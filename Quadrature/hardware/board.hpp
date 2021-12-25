@@ -14,6 +14,8 @@ extern "C" {
 #include "usb_device.h"
 #include "gpio.h"
 
+#include "usbd_cdc_if.h"
+
 #ifdef __cplusplus
 }
 #endif
@@ -32,6 +34,6 @@ void componentInit();
 
 // 1kHz
 extern "C" void updateEncoder();
-
+extern "C" void reportAbsoluteAngle();
 
 #endif

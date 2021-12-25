@@ -40,6 +40,10 @@ class IEncoder {
         return this->accumulated_angle;
     }
 
+    bool is_data_valid(){
+        return is_valid;
+    }
+
     protected:
     // the above differs in terms of whether angle warp-around is accumulated. 
     // if a motor rotates in positive direction for 2.5pi rad, we have:
@@ -66,11 +70,14 @@ class AS5048 : public IEncoder {
     bool initiateEncoderRead();
     bool encoderReadCompleteCallback();
 
+    int32_t getRawReceive();
+
     private:
     SPI_HandleTypeDef* spix;
     STM32Gpio CS_pin;
 
     uint16_t raw_receive;
+    uint8_t raw_buffer[2];
 
     float32_t last_absolute_angle = ABSOLUTE_ANGLE_NOT_INITIALIZED; 
 
