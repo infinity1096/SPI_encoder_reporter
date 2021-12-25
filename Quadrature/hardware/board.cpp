@@ -45,7 +45,7 @@ extern "C" void reportAbsoluteAngle(){
   size_t transmit_size = 0;
 
   //if (enc_0.is_data_valid()){
-    float_frame_buffer[frame_idx++] = enc_0.getRawReceive();
+    float_frame_buffer[frame_idx++] = enc_0.getAccumulatedAngle();
   //}
   
   if (frame_idx == frame_size){

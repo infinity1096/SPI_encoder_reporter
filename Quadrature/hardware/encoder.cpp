@@ -78,17 +78,19 @@ bool AS5048::encoderReadCompleteCallback(){
 
     this->CS_pin.write(true);
 
-    raw_receive = ((raw_buffer[0] << 8) | raw_buffer[1]);
+    raw_receive = ((raw_buffer[0] << 8) + (raw_buffer[1]));
 
-    uint16_t parity = raw_receive ^ (raw_receive >> 1);
-    parity = parity ^ (parity >> 2);
-    parity = parity ^ (parity >> 4);
-    parity = parity ^ (parity >> 8);
-
-    if ((parity & 0x01) == 0){
+    uint16_t parity = raw_receive;
+    
+    parity ^= parity >> 8;
+    parity ^= parity >> 4;
+    parity ^= parity >> 2;
+    parity ^= parity >> 1;
+    
+    //if ((parity & 0x01) == 0){
         //correct parity, data valid.
         int16_t raw_angle = raw_receive & AS5048A_DATA_MASK;
-        this->absolute_angle = (raw_angle - 8192) * PI / 16384.0f;
+        this->absolute_angle = (raw_angle - 4096) * PI / 4096.0f;
 
         if(this->last_absolute_angle == ABSOLUTE_ANGLE_NOT_INITIALIZED){
             this->accumulated_angle = this->accumulated_angle_turns * PI + this->absolute_angle;
@@ -98,13 +100,13 @@ bool AS5048::encoderReadCompleteCallback(){
             }else if (absolute_angle - last_absolute_angle < -PI){
                 this->accumulated_angle_turns++;
             }
-            this->accumulated_angle = this->accumulated_angle_turns * PI + this->absolute_angle;
+            this->accumulated_angle = this->accumulated_angle_turns * 2.0 * PI + this->absolute_angle;
         }
 
         this->is_valid = true;
         this->last_absolute_angle = this->absolute_angle;
-    }else{
+    //}else{
         //incorrect parity, data invalid
-        return false;
-    }
+    //    return false;
+    //}
 }
