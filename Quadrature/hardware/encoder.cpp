@@ -57,7 +57,7 @@ bool AS5048::initiateEncoderRead(){
 
     // check if DMA is free
     if (spix->hdmarx->State == HAL_DMA_STATE_READY){
-        status = HAL_SPI_TransmitReceive_DMA(this->spix, (uint8_t*)&transmit_command,(uint8_t*)&this->raw_receive, 2); //SPI data unit is 2 bytes, so length is 1 
+        status = HAL_SPI_TransmitReceive_DMA(this->spix, (uint8_t*)&transmit_command,this->raw_buffer, 2); //SPI data unit is 2 bytes, so length is 1 
         if (status == HAL_ERROR){
             // error, reset CS pin
             this->CS_pin.write(true);
@@ -67,12 +67,18 @@ bool AS5048::initiateEncoderRead(){
     return status == HAL_OK;
 }
 
+int32_t AS5048::getRawReceive(){
+        return raw_receive & AS5048A_DATA_MASK;
+}
+
 
 bool AS5048::encoderReadCompleteCallback(){
     // parity check
     // parity computed according to https://www.geeksforgeeks.org/finding-the-parity-of-a-number-efficiently/
 
     this->CS_pin.write(true);
+
+    raw_receive = ((raw_buffer[0] << 8) | raw_buffer[1]);
 
     uint16_t parity = raw_receive ^ (raw_receive >> 1);
     parity = parity ^ (parity >> 2);
@@ -94,6 +100,8 @@ bool AS5048::encoderReadCompleteCallback(){
             }
             this->accumulated_angle = this->accumulated_angle_turns * PI + this->absolute_angle;
         }
+
+        this->is_valid = true;
         this->last_absolute_angle = this->absolute_angle;
     }else{
         //incorrect parity, data invalid
