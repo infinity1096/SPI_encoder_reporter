@@ -29,9 +29,15 @@ extern "C" void updateEncoder(){
     enc_0.initiateEncoderRead();
 }
 
+// called when SPI_Receive_DMA is called
+extern "C" void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi){
+  HAL_SPI_TxRxCpltCallback(hspi);
+}
+
+// called when SPI_TransmitReceive_DMA is called
 extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
-  int a = 0;
   if (hspi == &hspi1){
     enc_0.encoderReadCompleteCallback();
   }
 }
+

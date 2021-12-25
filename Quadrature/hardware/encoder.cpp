@@ -50,16 +50,18 @@ bool AS5048::initiateEncoderRead(){
     this->CS_pin.write(false);
 
     //prepare receive command
-    uint8_t transmit_buffer[4] = {0xff,0xff,0x00,0x00};
-    this->raw_receive = AS5048A_PARITY | AS5048A_READ_FLAG | AS5048A_ANGLE_ADDR;
+    int16_t transmit_command = AS5048A_PARITY | AS5048A_READ_FLAG | AS5048A_ANGLE_ADDR;
+
     
     HAL_StatusTypeDef status = HAL_ERROR;
 
     // check if DMA is free
-    if (spix->hdmarx->State != HAL_DMA_STATE_READY){
-        status = HAL_BUSY;
-    }else{
-        status = HAL_SPI_TransmitReceive_DMA(this->spix, transmit_buffer, (uint8_t*)&this->raw_receive, 2); //SPI data unit is 2 bytes, so length is 1 
+    if (spix->hdmarx->State == HAL_DMA_STATE_READY){
+        status = HAL_SPI_TransmitReceive_DMA(this->spix, (uint8_t*)&transmit_command,(uint8_t*)&this->raw_receive, 2); //SPI data unit is 2 bytes, so length is 1 
+        if (status == HAL_ERROR){
+            // error, reset CS pin
+            this->CS_pin.write(true);
+        }
     }
 
     return status == HAL_OK;
