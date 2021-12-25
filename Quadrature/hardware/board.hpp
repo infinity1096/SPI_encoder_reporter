@@ -33,8 +33,5 @@ void componentInit();
 // 1kHz
 extern "C" void updateEncoder();
 
-// callbacks
-extern "C" void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi);
-extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi);
 
 #endif
