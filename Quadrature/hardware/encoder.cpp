@@ -87,7 +87,7 @@ bool AS5048::encoderReadCompleteCallback(){
     parity ^= parity >> 2;
     parity ^= parity >> 1;
     
-    //if ((parity & 0x01) == 0){
+    if ((parity & 0x01) == 0){
         //correct parity, data valid.
         int16_t raw_angle = raw_receive & AS5048A_DATA_MASK;
         this->absolute_angle = (raw_angle - 4096) * PI / 4096.0f;
@@ -105,8 +105,8 @@ bool AS5048::encoderReadCompleteCallback(){
 
         this->is_valid = true;
         this->last_absolute_angle = this->absolute_angle;
-    //}else{
+    }else{
         //incorrect parity, data invalid
-    //    return false;
-    //}
+        return false;
+    }
 }
