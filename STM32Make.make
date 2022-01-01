@@ -36,8 +36,12 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
+Board/Src/adc.c \
+Board/Src/can.c \
 Board/Src/dma.c \
+Board/Src/freertos.c \
 Board/Src/gpio.c \
+Board/Src/i2c.c \
 Board/Src/main_old.c \
 Board/Src/spi.c \
 Board/Src/stm32f4xx_hal_msp.c \
@@ -46,6 +50,9 @@ Board/Src/stm32f4xx_it.c \
 Board/Src/system_stm32f4xx.c \
 Board/Src/tim.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
@@ -54,6 +61,8 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
@@ -63,6 +72,7 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c \
 Drivers/STM32_USB_DEVICE/App/usb_device.c \
 Drivers/STM32_USB_DEVICE/App/usbd_cdc_if.c \
@@ -76,9 +86,12 @@ Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
 
 CPP_SOURCES = \
 Quadrature/hardware/board.cpp \
+Quadrature/hardware/current_sensor.cpp \
 Quadrature/hardware/encoder.cpp \
+Quadrature/hardware/modulator.cpp \
 Quadrature/hardware/stm32/stm32gpio.cpp \
 Quadrature/hardware/stm32/usb_vcp.cpp \
+Quadrature/hardware_interface.cpp \
 Quadrature/main.cpp
 
 
@@ -152,8 +165,15 @@ C_INCLUDES =  \
 -IDrivers/STM32F4xx_HAL_Driver/Inc/Legacy \
 -IDrivers/STM32_USB_DEVICE/App \
 -IDrivers/STM32_USB_DEVICE/Target \
+-IMiddlewares/FreeRTOS/Source/CMSIS_RTOS_V2 \
+-IMiddlewares/FreeRTOS/Source/include \
+-IMiddlewares/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 -IMiddlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc \
 -IMiddlewares/ST/STM32_USB_Device_Library/Core/Inc \
+-IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
+-IMiddlewares/Third_Party/FreeRTOS/Source/include \
+-IMiddlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
+-IQuadrature \
 -IQuadrature/hardware \
 -IQuadrature/hardware/stm32 \
 -IUSB_DEVICE/App \

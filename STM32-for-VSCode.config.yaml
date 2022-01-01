@@ -71,6 +71,7 @@ includeDirectories:
   - Quadrature/**
   - Drivers/STM32_USB_DEVICE/**
   - Drivers/CMSIS/DSP/Include/*
+  - Middlewares/FreeRTOS/Source/**
 
 # Files that should be included in the compilation.
 # If a CubeMX makefile is present it will automatically include the  c and cpp/cxx files from that makefile.

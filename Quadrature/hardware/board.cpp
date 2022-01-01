@@ -6,11 +6,22 @@ extern "C" void SystemClock_Config(void);
 void boardInit(){
   HAL_Init();
   SystemClock_Config();
-  MX_DMA_Init();  // DMA should be initialized before SPI using DMA !!
+
   MX_GPIO_Init();
-  MX_USB_DEVICE_Init();
-  MX_TIM3_Init();
+  MX_DMA_Init(); // DMA should be initialized before SPI using DMA !!
+
+  MX_ADC1_Init();
+  MX_ADC3_Init();
+  MX_CAN1_Init();
+  MX_I2C1_Init();
+ 
+
   MX_SPI1_Init();
+  MX_SPI2_Init();
+  MX_SPI3_Init();
+
+  MX_TIM1_Init();
+  MX_TIM8_Init();
   MX_TIM4_Init();
 }
 

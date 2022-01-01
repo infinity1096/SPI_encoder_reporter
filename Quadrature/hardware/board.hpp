@@ -11,6 +11,10 @@ extern "C" {
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
+#include "i2c.h"
+#include "adc.h"
+#include "freertos.h"
+#include "can.h"
 #include "usb_device.h"
 #include "gpio.h"
 

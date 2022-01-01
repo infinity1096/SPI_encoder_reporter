@@ -18,6 +18,7 @@ class STM32Gpio{
     STM32Gpio(GPIO_TypeDef* port, uint16_t pin) : port(port), pin(pin) {};
 
     void write(bool isSet);
+    bool read();
 
     private:
     GPIO_TypeDef* port;

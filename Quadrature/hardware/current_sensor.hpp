@@ -25,7 +25,7 @@ class ICurrentSensor{
 
     private:
     float32_t sensed_current[3];
-    bool is_valid = false;    
+    bool is_valid_ = false;    
 };
 
 class ADCSampledShunt : public ICurrentSensor{
