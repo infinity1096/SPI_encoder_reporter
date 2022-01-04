@@ -18,6 +18,8 @@ extern "C" {
 #include "usb_device.h"
 #include "gpio.h"
 
+#include "arm_math.h"
+
 #include "usbd_cdc_if.h"
 
 #ifdef __cplusplus
@@ -26,11 +28,16 @@ extern "C" {
 
 // C++ includes
 #include "encoder.hpp"
+#include "modulator.hpp"
 
 void boardInit();
 
 //components
 extern AS5048 enc_0;
+
+extern DRV8301 modulator0;
+extern DRV8301 modulator1;
+
 
 void componentInit();
 

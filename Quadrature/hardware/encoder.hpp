@@ -77,7 +77,7 @@ class AS5048 : public IEncoder {
     STM32Gpio CS_pin;
 
     uint16_t raw_receive;
-    uint8_t raw_buffer[2];
+    uint16_t raw_buffer;
 
     float32_t last_absolute_angle = ABSOLUTE_ANGLE_NOT_INITIALIZED; 
 

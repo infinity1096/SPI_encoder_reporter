@@ -48,8 +48,14 @@ void MX_SPI1_Init(void)
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
   hspi1.Init.DataSize = SPI_DATASIZE_16BIT;
+
+  // https://electronics.stackexchange.com/questions/223426/as5048a-spi-13bits-instead-of-14bits-resolution/223830#223830?newreg=c3dd42c8a428470aac3efb338f84e7e6
+  // read carefully the datasheet of AS5048A:
+  // SCL should be LOW at idle
+  // data is sampled on falling edge -> CPHA should be set!
+
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
   hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;

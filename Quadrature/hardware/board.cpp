@@ -23,6 +23,8 @@ void boardInit(){
   MX_TIM1_Init();
   MX_TIM8_Init();
   MX_TIM4_Init();
+
+  MX_USB_DEVICE_Init();
 }
 
 //components
@@ -31,9 +33,27 @@ AS5048 enc_0{
   {GPIOA,GPIO_PIN_15}   // CS pin
 };
 
+DRV8301 modulator0{
+  &htim1,
+  {GPIOC, GPIO_PIN_9},
+  {GPIOC, GPIO_PIN_5},
+  {GPIOC, GPIO_PIN_15}
+};
+
+DRV8301 modulator1{
+  &htim8,
+  {GPIOB, GPIO_PIN_12},
+  {GPIOB, GPIO_PIN_2},
+  {GPIOB, GPIO_PIN_11}
+};
 
 void componentInit(){
   enc_0.initialize();
+  modulator0.initialize();
+  modulator1.initialize();
+
+  // start timer
+  HAL_TIM_Base_Start_IT(&htim4);
 };
 
 extern "C" void updateEncoder(){

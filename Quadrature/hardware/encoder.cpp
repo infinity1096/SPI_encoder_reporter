@@ -57,7 +57,7 @@ bool AS5048::initiateEncoderRead(){
 
     // check if DMA is free
     if (spix->hdmarx->State == HAL_DMA_STATE_READY){
-        status = HAL_SPI_TransmitReceive_DMA(this->spix, (uint8_t*)&transmit_command,this->raw_buffer, 2); //SPI data unit is 2 bytes, so length is 1 
+        status = HAL_SPI_TransmitReceive_DMA(this->spix, (uint8_t*)&transmit_command,(uint8_t*)(&this->raw_buffer), 1); //SPI data unit is 2 bytes, so length is 1 
         if (status == HAL_ERROR){
             // error, reset CS pin
             this->CS_pin.write(true);
@@ -78,7 +78,7 @@ bool AS5048::encoderReadCompleteCallback(){
 
     this->CS_pin.write(true);
 
-    raw_receive = ((raw_buffer[0] << 8) + (raw_buffer[1]));
+    raw_receive = raw_buffer;
 
     uint16_t parity = raw_receive;
     
@@ -90,7 +90,7 @@ bool AS5048::encoderReadCompleteCallback(){
     if ((parity & 0x01) == 0){
         //correct parity, data valid.
         int16_t raw_angle = raw_receive & AS5048A_DATA_MASK;
-        this->absolute_angle = (raw_angle - 4096) * PI / 4096.0f;
+        this->absolute_angle = (raw_angle - 8192) * PI / 8192.0f;
 
         if(this->last_absolute_angle == ABSOLUTE_ANGLE_NOT_INITIALIZED){
             this->accumulated_angle = this->accumulated_angle_turns * PI + this->absolute_angle;
