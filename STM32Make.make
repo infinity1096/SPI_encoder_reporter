@@ -13,7 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = SPI_encoder_reporter
+TARGET = Quadrature
 
 
 ######################################
@@ -22,7 +22,7 @@ TARGET = SPI_encoder_reporter
 # debug build?
 DEBUG = 1
 # optimization
-OPT = -O0
+OPT = -Og
 
 
 #######################################
@@ -78,6 +78,16 @@ Drivers/STM32_USB_DEVICE/App/usb_device.c \
 Drivers/STM32_USB_DEVICE/App/usbd_cdc_if.c \
 Drivers/STM32_USB_DEVICE/App/usbd_desc.c \
 Drivers/STM32_USB_DEVICE/Target/usbd_conf.c \
+Middlewares/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c \
+Middlewares/FreeRTOS/Source/croutine.c \
+Middlewares/FreeRTOS/Source/event_groups.c \
+Middlewares/FreeRTOS/Source/list.c \
+Middlewares/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
+Middlewares/FreeRTOS/Source/portable/MemMang/heap_4.c \
+Middlewares/FreeRTOS/Source/queue.c \
+Middlewares/FreeRTOS/Source/stream_buffer.c \
+Middlewares/FreeRTOS/Source/tasks.c \
+Middlewares/FreeRTOS/Source/timers.c \
 Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
@@ -151,6 +161,13 @@ C_DEFS =  \
 -DUSE_HAL_DRIVER
 
 
+# CXX defines
+CXX_DEFS =  \
+-DARM_MATH_CM4 \
+-DSTM32F405xx \
+-DUSE_HAL_DRIVER
+
+
 # AS includes
 AS_INCLUDES = \
 
@@ -186,18 +203,20 @@ ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffuncti
 
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
+CXXFLAGS = $(MCU) $(CXX_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections -feliminate-unused-debug-types
+
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
 endif
 
 # Add additional flags
 CFLAGS += 
-ASFLAGS += -specs=nosys.specs 
-CXXFLAGS = 
-CXXFLAGS += -feliminate-unused-debug-types
+ASFLAGS += 
+CXXFLAGS += 
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
+CXXFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
 #######################################
 # LDFLAGS
@@ -211,7 +230,7 @@ LIBDIR = \
 
 
 # Additional LD Flags from config file
-ADDITIONALLDFLAGS = -specs=nosys.specs 
+ADDITIONALLDFLAGS = -specs=nano.specs -specs=nosys.specs 
 
 LDFLAGS = $(MCU) $(ADDITIONALLDFLAGS) -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
@@ -225,6 +244,7 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 # list of cpp program objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
 vpath %.cpp $(sort $(dir $(CPP_SOURCES)))
+
 # list of C objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
@@ -233,7 +253,10 @@ OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
 $(BUILD_DIR)/%.o: %.cpp STM32Make.make | $(BUILD_DIR) 
-	$(CXX) -c $(CXXFLAGS) $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) $< -o $@
+	$(CXX) -c $(CXXFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) $< -o $@
+
+$(BUILD_DIR)/%.o: %.cxx STM32Make.make | $(BUILD_DIR) 
+	$(CXX) -c $(CXXFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cxx=.lst)) $< -o $@
 
 $(BUILD_DIR)/%.o: %.c STM32Make.make | $(BUILD_DIR) 
 	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@

@@ -11,13 +11,10 @@ int main(){
     
     HAL_Delay(100);
 
-    //modulator1.modulate(0.0,0.0,0.0);
-    //modulator1.hardwareEnable();
+    modulator1.modulate(0.0,0.0,0.0);
+    modulator1.hardwareEnable();
     while (1){
-        //tick += 1;
-        //th = 1e-3 * tick * omega;
-
-        //modulator1.modulate(8.0 * cos(th),8.0 * cos(th + 2.0 * PI / 3.0),8.0 * cos(th - 2.0 * PI / 3.0));
+        modulator1.modulate(2.0 * cos(th),2.0 * cos(th + 2.0 * PI / 3.0),2.0 * cos(th - 2.0 * PI / 3.0));
         HAL_Delay(1);
     }
 }

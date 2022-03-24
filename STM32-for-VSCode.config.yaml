@@ -6,16 +6,16 @@
 # - entry_2
 
 # The project name
-target: SPI_encoder_reporter
+target: Quadrature
 # Can be C or C++
 language: C++
 
-optimization: O0
+optimization: Og
 
 # MCU settings
 targetMCU: stm32f4x
-cpu: -mcpu=cortex-m4
-fpu: -mfpu=fpv4-sp-d16
+cpu: cortex-m4 # type of cpu e.g. cortex-m4
+fpu: fpv4-sp-d16 # Defines how floating points are defined. Can be left empty.
 floatAbi: -mfloat-abi=hard
 ldscript: STM32F405RGTx_FLASH.ld # linker script
 
@@ -25,7 +25,11 @@ cDefinitions:
   - STM32F405xx
   - ARM_MATH_CM4
 
-cxxDefinitions: []
+cxxDefinitions: 
+  - USE_HAL_DRIVER
+  - STM32F405xx
+  - ARM_MATH_CM4
+
 asDefinitions: []
 
 # Compiler definition files. you can add a single files or an array of files for different definitions.
@@ -39,17 +43,18 @@ asDefinitionsFile:
 # Compiler flags
 cFlags: []
 cxxFlags: []
-assemblyFlags: 
-  - -specs=nosys.specs
+assemblyFlags: []
+linkerFlags: 
+  -specs=nosys.specs
 
 
 # libraries to be included. The -l prefix to the library will be automatically added.
-# Mind that non standard libraries should have a path to their respective directory.
 libraries: 
   - c
   - m
   - nosys
 
+# Library directories. Folders can be added here that contain custom libraries.
 libraryDirectories: []
 
 # Files or folders that will be excluded from compilation.
@@ -67,11 +72,20 @@ excludes:
 # Include directories (directories containing .h or .hpp files)
 # If a CubeMX makefile is present it will automatically include the include directories from that makefile.
 includeDirectories: 
-  - Board/Inc/*
+  - Drivers/STM32F4xx_HAL_Driver/Inc
+  - Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
+  - Middlewares/FreeRTOS/Source/include
+  - Middlewares/FreeRTOS/Source/CMSIS_RTOS_V2
+  - Middlewares/FreeRTOS/Source/portable/GCC/ARM_CM4F
+  - Middlewares/ST/STM32_USB_Device_Library/Core/Inc
+  - Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
+  - Drivers/CMSIS/Device/ST/STM32F4xx/Include
+  - Drivers/CMSIS/Include
+  - Drivers/CMSIS/DSP/Include
   - Quadrature/**
+  - Board/Inc/*
   - Drivers/STM32_USB_DEVICE/**
-  - Drivers/CMSIS/DSP/Include/*
-  - Middlewares/FreeRTOS/Source/**
+
 
 # Files that should be included in the compilation.
 # If a CubeMX makefile is present it will automatically include the  c and cpp/cxx files from that makefile.
@@ -79,8 +93,26 @@ includeDirectories:
 # Do mind that double stars are reserved in yaml
 # these should be escaped with a: \ or the name should be in double quotes e.g. "HARDWARE_DRIVER*.c"
 sourceFiles:  
+  - startup_stm32f405xx.s
   - Board/Src/*
   - Quadrature/**
+  - Middlewares/FreeRTOS/Source/croutine.c
+  - Middlewares/FreeRTOS/Source/event_groups.c
+  - Middlewares/FreeRTOS/Source/list.c
+  - Middlewares/FreeRTOS/Source/queue.c
+  - Middlewares/FreeRTOS/Source/stream_buffer.c
+  - Middlewares/FreeRTOS/Source/tasks.c
+  - Middlewares/FreeRTOS/Source/timers.c
+  - Middlewares/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c
+  - Middlewares/FreeRTOS/Source/portable/MemMang/heap_4.c
+  - Middlewares/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
+  - Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c
+  - Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+  - Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+  - Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c
+  - Src/**
+  - Core/Src/**
+  - Core/Lib/**
   - Drivers/STM32_USB_DEVICE/**
 
 
