@@ -10,7 +10,7 @@ target: Quadrature
 # Can be C or C++
 language: C++
 
-optimization: Og
+optimization: O0
 
 # MCU settings
 targetMCU: stm32f4x
@@ -53,9 +53,11 @@ libraries:
   - c
   - m
   - nosys
+  - arm_cortexM4lf_math
 
 # Library directories. Folders can be added here that contain custom libraries.
-libraryDirectories: []
+libraryDirectories: 
+  - Drivers/CMSIS/Lib/GCC/
 
 # Files or folders that will be excluded from compilation.
 # Glob patterns (https://www.wikiwand.com/en/Glob_(programming)) can be used.
@@ -81,7 +83,7 @@ includeDirectories:
   - Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
   - Drivers/CMSIS/Device/ST/STM32F4xx/Include
   - Drivers/CMSIS/Include
-  - Drivers/CMSIS/DSP/Include
+  - Drivers/CMSIS/DSP/Include/*
   - Quadrature/**
   - Board/Inc/*
   - Drivers/STM32_USB_DEVICE/**

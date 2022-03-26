@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#include "stm32f405xx.h"
 // add C includes here
 #include "main.h"
 #include "dma.h"

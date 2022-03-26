@@ -22,7 +22,7 @@ TARGET = Quadrature
 # debug build?
 DEBUG = 1
 # optimization
-OPT = -Og
+OPT = -O0
 
 
 #######################################
@@ -225,8 +225,9 @@ CXXFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 LDSCRIPT = STM32F405RGTx_FLASH.ld
 
 # libraries
-LIBS = -lc -lm -lnosys 
+LIBS = -larm_cortexM4lf_math -lc -lm -lnosys 
 LIBDIR = \
+-LDrivers/CMSIS/Lib/GCC/
 
 
 # Additional LD Flags from config file

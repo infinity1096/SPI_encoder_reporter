@@ -3,7 +3,7 @@
         {
             "showDevDebugOutput": true,
             "cwd": "${workspaceRoot}",
-            "executable": "./build/SPI_encoder_reporter.elf",
+            "executable": "./build/Quadrature.elf",
             "name": "Debug STM32",
             "request": "launch",
             "type": "cortex-debug",
