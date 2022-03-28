@@ -95,6 +95,7 @@ Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
 
 
 CPP_SOURCES = \
+Quadrature/FOC_math.cpp \
 Quadrature/hardware/board.cpp \
 Quadrature/hardware/current_sensor.cpp \
 Quadrature/hardware/encoder.cpp \

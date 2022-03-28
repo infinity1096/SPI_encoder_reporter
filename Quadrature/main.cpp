@@ -1,5 +1,8 @@
-#include "board.hpp"
 #include "FOC_math.hpp"
+
+#include "board.hpp"
+
+
 
 double th = 0;
 double omega = 11.0 * 1.0;
@@ -22,8 +25,10 @@ int main(){
         inversePark(Vdq0, th, Vab0);
         inverseClarke(Vab0, Vabc);
 
-        modulator0.modulate(Vabc[0],Vabc[1],Vabc[2]);
+        modulator0.modulate(Vab0);
+        //modulator0.modulate(Vabc[0], Vabc[1], Vabc[2]);
+
         HAL_Delay(1);
-        th += 0.25;
+        th += 0.24;
     }
 }

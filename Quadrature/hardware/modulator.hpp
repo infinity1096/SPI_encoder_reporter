@@ -16,7 +16,7 @@ extern "C" {
 
 // C++ includes
 #include "stm32gpio.hpp"
-
+#include "FOC_math.hpp"
 class IModulator {
     public:
     virtual void initialize()=0;
@@ -29,6 +29,7 @@ class IModulator {
     }
     
     virtual void modulate(float32_t Va, float32_t Vb, float32_t Vc)=0;
+    virtual void modulate(float32_t Vab0[3])=0;
 
     private:
     bool fault = false;
@@ -43,7 +44,8 @@ class DRV8301 : public IModulator{
 
     void hardwareEnable();
     void hardwareDisable();
-    void modulate(float32_t Va, float32_t Vb, float32_t Vc);
+    void modulate(float32_t Va, float32_t Vb, float32_t Vc) override;
+    void modulate(float32_t Vab0[3]) override;
 
     TIM_HandleTypeDef* htimx;
 
@@ -51,9 +53,6 @@ class DRV8301 : public IModulator{
     STM32Gpio enable_pin;
     STM32Gpio nfault_pin;
     STM32Gpio noctw_pin;
-
-    //SPI_HandleTypeDef* hspix;
-    
 
     float32_t V_dc = 24.0; // FIXME: make this real value sensed by ADC
 };

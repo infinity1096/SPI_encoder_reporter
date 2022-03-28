@@ -1,5 +1,7 @@
 #include "modulator.hpp"
 
+#define SVPWM_MODULATION
+
 void DRV8301::initialize(){
     hardwareDisable();
 }
@@ -31,4 +33,22 @@ void DRV8301::modulate(float32_t Va, float32_t Vb, float32_t Vc){
     htimx->Instance->CCR1 = tim_period * (0.5f + Va / this->V_dc);
     htimx->Instance->CCR2 = tim_period * (0.5f + Vb / this->V_dc);
     htimx->Instance->CCR3 = tim_period * (0.5f + Vc / this->V_dc); 
+}
+
+void DRV8301::modulate(float32_t Vab0[3]){
+    float32_t tABC[3];
+    uint16_t tim_period = htimx->Init.Period;
+
+    if (Vab0[0] * Vab0[0] + Vab0[1] * Vab0[1] <= 24 * 24 / 3.0){
+        // within modulation range
+        SVPWM(Vab0, 24, tABC);
+        
+        htimx->Instance->CCR1 = tim_period * tABC[0];
+        htimx->Instance->CCR2 = tim_period * tABC[1];
+        htimx->Instance->CCR3 = tim_period * tABC[2]; 
+    }else{
+        htimx->Instance->CCR1 = tim_period / 2;
+        htimx->Instance->CCR2 = tim_period / 2;
+        htimx->Instance->CCR3 = tim_period / 2; 
+    }
 }
