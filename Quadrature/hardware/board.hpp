@@ -30,6 +30,8 @@ extern "C" {
 #include "encoder.hpp"
 #include "modulator.hpp"
 
+#include "simulink_report.hpp"
+
 
 void boardInit();
 
@@ -39,6 +41,9 @@ extern AS5048 enc_0;
 extern DRV8301 modulator0;
 extern DRV8301 modulator1;
 
+typedef struct{
+    float32_t enc_pos_0;
+} Simulink_Packet_t;
 
 void componentInit();
 

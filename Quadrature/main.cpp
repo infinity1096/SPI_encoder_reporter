@@ -25,10 +25,10 @@ int main(){
         inversePark(Vdq0, th, Vab0);
         inverseClarke(Vab0, Vabc);
 
-        modulator0.modulate(Vab0);
+        //modulator0.modulate(Vab0);
         //modulator0.modulate(Vabc[0], Vabc[1], Vabc[2]);
 
         HAL_Delay(1);
-        th += 0.24;
+        th += 0.03;
     }
 }

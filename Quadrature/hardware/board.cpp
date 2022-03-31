@@ -60,45 +60,12 @@ extern "C" void updateEncoder(){
     enc_0.initiateEncoderRead();
 }
 
-size_t frame_size = 10;
-size_t frame_idx = 0;
-float32_t float_frame_buffer[10];
-
-float32_t float_buffer[11];
-size_t counter = 0;
-
-float32_t t = 0;
-size_t idx = 0;
+SimulinkReport<Simulink_Packet_t, 100> reporter;
+Simulink_Packet_t packet;
 
 extern "C" void reportAbsoluteAngle(){
-  idx++;
-
-  size_t transmit_size = 0;
-
-  //if (enc_0.is_data_valid()){
-    float_frame_buffer[frame_idx++] = enc_0.getAccumulatedAngle();
-  //}
-  
-  if (frame_idx == frame_size){
-    frame_idx = 0;
-
-    //send one frame
-    if(counter == 0){
-      float_buffer[0] = *(float32_t*)"SSSS";
-      memcpy(float_buffer+1, float_frame_buffer, frame_size * sizeof(float32_t));
-      counter ++;
-      CDC_Transmit_FS((uint8_t*)float_buffer, (1 + frame_size) * sizeof(float32_t));
-    } else if(counter == 99){
-      memcpy(float_buffer, float_frame_buffer, frame_size * sizeof(float32_t));
-      float_buffer[frame_size] = *(float32_t*)"EEEE";
-      counter = 0;
-      CDC_Transmit_FS((uint8_t*)float_buffer, (1 + frame_size) * sizeof(float32_t));
-    }else{
-      memcpy(float_buffer, float_frame_buffer, frame_size * sizeof(float32_t));
-      CDC_Transmit_FS((uint8_t*)float_buffer, frame_size * sizeof(float32_t));
-      counter++;
-    }
-  }
+  packet.enc_pos_0 = enc_0.getAbsoluteAngle();
+  reporter.append(packet);
 }
 
 
