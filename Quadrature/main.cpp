@@ -5,6 +5,7 @@
 
 
 double th = 0;
+unsigned long loop_idx = 0;
 double omega = 11.0 * 1.0;
 
 uint32_t tick = 0;
@@ -25,10 +26,15 @@ int main(){
         inversePark(Vdq0, th, Vab0);
         inverseClarke(Vab0, Vabc);
 
-        //modulator0.modulate(Vab0);
+        modulator0.modulate(Vab0);
         //modulator0.modulate(Vabc[0], Vabc[1], Vabc[2]);
 
         HAL_Delay(1);
-        th += 0.03;
+        loop_idx++;
+
+        double t = (double)loop_idx / 1000.0;
+
+        th += 0.20 * sin(6.28 * t);
+        
     }
 }

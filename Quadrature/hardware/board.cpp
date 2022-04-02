@@ -54,7 +54,7 @@ void componentInit(){
 
   // start timer
   HAL_TIM_Base_Start_IT(&htim4);
-};
+}
 
 extern "C" void updateEncoder(){
     enc_0.initiateEncoderRead();

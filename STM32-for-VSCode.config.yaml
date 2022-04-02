@@ -41,8 +41,8 @@ cxxDefinitionsFile:
 asDefinitionsFile:
 
 # Compiler flags
-cFlags: []
-cxxFlags: []
+cFlags: [-Wall, -pedantic]
+cxxFlags: [-g, -gdwarf-2, -Wall, -pedantic]
 assemblyFlags: []
 linkerFlags: 
   -specs=nosys.specs

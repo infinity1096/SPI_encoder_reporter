@@ -232,4 +232,6 @@ clean:
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
 
+.SILENT: *.o
+
 # *** EOF ***

@@ -211,9 +211,9 @@ CFLAGS += -g -gdwarf-2
 endif
 
 # Add additional flags
-CFLAGS += 
+CFLAGS += -Wall -pedantic 
 ASFLAGS += 
-CXXFLAGS += 
+CXXFLAGS += -Wall -g -gdwarf-2 -pedantic 
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
