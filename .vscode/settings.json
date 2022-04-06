@@ -6,6 +6,7 @@
         "main.h": "c",
         "arm_math.h": "c",
         "core_cm3.h": "c",
-        "core_cm4.h": "c"
+        "core_cm4.h": "c",
+        "stm32f4xx_it.h": "c"
     }
 }

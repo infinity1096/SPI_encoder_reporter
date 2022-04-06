@@ -21,6 +21,7 @@ void boardInit(){
   MX_SPI3_Init();
 
   MX_TIM1_Init();
+  MX_TIM2_Init();
   MX_TIM8_Init();
   MX_TIM4_Init();
 
@@ -60,12 +61,12 @@ extern "C" void updateEncoder(){
     enc_0.initiateEncoderRead();
 }
 
-SimulinkReport<Simulink_Packet_t, 100> reporter;
-Simulink_Packet_t packet;
+//SimulinkReport<Simulink_Packet_t, 100> reporter;
+//Simulink_Packet_t packet;
 
 extern "C" void reportAbsoluteAngle(){
-  packet.enc_pos_0 = enc_0.getAbsoluteAngle();
-  reporter.append(packet);
+  //packet.enc_pos_0 = enc_0.getAbsoluteAngle();
+  //reporter.append(packet);
 }
 
 

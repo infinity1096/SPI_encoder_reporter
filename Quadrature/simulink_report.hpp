@@ -33,6 +33,8 @@ class SimulinkReport{
         
         CDC_Transmit_FS(buffer, 2 * sizeof(float) + buf_length * sizeof(T));
         current_write_idx = 0;
+
+        return true;
     }
 
     bool isFull(){

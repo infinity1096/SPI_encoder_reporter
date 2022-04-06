@@ -45,6 +45,11 @@ typedef struct{
     float32_t enc_pos_0;
 } Simulink_Packet_t;
 
+typedef struct{
+    float32_t Iabc_sense[3];
+    float32_t angle;
+} Simulink_ADC_Packet_t;
+
 void componentInit();
 
 // function need to be called by timers
