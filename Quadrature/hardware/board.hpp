@@ -50,6 +50,11 @@ typedef struct{
     float32_t angle;
 } Simulink_ADC_Packet_t;
 
+typedef struct{
+    float32_t Idq0_sense[3];
+    float32_t angle;
+} Simulink_IDQ0_Packet_t;
+
 void componentInit();
 
 // function need to be called by timers

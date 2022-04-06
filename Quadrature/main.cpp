@@ -1,8 +1,7 @@
 #include "FOC_math.hpp"
 
 #include "board.hpp"
-
-
+#define POLE_PAIR 11
 
 double th = 0;
 unsigned long loop_idx = 0;
@@ -13,18 +12,26 @@ uint32_t tick = 0;
 int16_t data[3];
 
 Simulink_ADC_Packet_t adcPacket;
-SimulinkReport<Simulink_ADC_Packet_t, 1000> adc_info_reporter;
+Simulink_IDQ0_Packet_t dq0Packet;
+SimulinkReport<Simulink_IDQ0_Packet_t, 1000> dq0_info_reporter;
 
 extern "C" void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
     __NOP();
 }
 
 extern "C" void reportADC(void){
-    adcPacket.Iabc_sense[0] = data[0];
-    adcPacket.Iabc_sense[1] = data[1];
-    adcPacket.Iabc_sense[2] = data[2];
-    adcPacket.angle = enc_0.getAccumulatedAngle();
-    adc_info_reporter.append(adcPacket);
+
+    dq0Packet.angle = -(enc_0.getAccumulatedAngle() - 0.178712);
+
+    float32_t currentFloat[3], Iab0[3];
+    currentFloat[0] = data[0];
+    currentFloat[1] = data[1];
+    currentFloat[2] = data[2];
+
+    forwardClarke(currentFloat, Iab0);
+    forwardPark(Iab0, POLE_PAIR * dq0Packet.angle, dq0Packet.Idq0_sense);
+
+    dq0_info_reporter.append(dq0Packet);
 }
 
 int main(){
@@ -36,21 +43,21 @@ int main(){
     modulator0.modulate(0.0,0.0,0.0);
     modulator0.hardwareEnable();
     while (1){
-        float32_t Vdq0[3] = {0.5,0.0,0.0};
+        float32_t Vdq0[3] = {0.0,0.2,0.0};
         float32_t Vab0[3] = {0.0,0.0,0.0};
         float32_t Vabc[3] = {0.0,0.0,0.0};
 
-        inversePark(Vdq0, th, Vab0);
+        float thetaElectric = -POLE_PAIR * (enc_0.getAccumulatedAngle() - 0.178712);
+
+        inversePark(Vdq0, thetaElectric, Vab0);
         inverseClarke(Vab0, Vabc);
 
         modulator0.modulate(Vab0);
-        //modulator0.modulate(Vabc[0], Vabc[1], Vabc[2]);
 
         HAL_Delay(1);
         loop_idx++;
 
         double t = (double)loop_idx / 1000.0;
-
-        th += 0.20 * sin(t);
+        //th += 0.20 * sin(t);
     }
 }
