@@ -22,6 +22,7 @@ void boardInit(){
 
   MX_TIM1_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
   MX_TIM8_Init();
   MX_TIM4_Init();
 
@@ -48,10 +49,15 @@ DRV8301 modulator1{
   {GPIOB, GPIO_PIN_11}
 };
 
+MicrosecondsTimer timerUs(&htim3);
+VelocityObserver vel_obs(300, &timerUs);
+
+
 void componentInit(){
   enc_0.initialize();
   modulator0.initialize();
   modulator1.initialize();
+  timerUs.initialize();
 
   // start timer
   HAL_TIM_Base_Start_IT(&htim4);
@@ -59,6 +65,10 @@ void componentInit(){
 
 extern "C" void updateEncoder(){
     enc_0.initiateEncoderRead();
+}
+
+extern "C" void updateMicrosecondTimer(){
+  timerUs.TIMCallback();
 }
 
 //SimulinkReport<Simulink_Packet_t, 100> reporter;
