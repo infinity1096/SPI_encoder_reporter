@@ -50,7 +50,7 @@ bool AS5048::initiateEncoderRead(){
     CS_pin.write(false);
 
     //prepare receive command
-    int16_t transmit_command = AS5048A_PARITY | AS5048A_READ_FLAG | AS5048A_ANGLE_ADDR;
+    uint16_t transmit_command = AS5048A_PARITY | AS5048A_READ_FLAG | AS5048A_ANGLE_ADDR;
 
     
     HAL_StatusTypeDef status = HAL_ERROR;

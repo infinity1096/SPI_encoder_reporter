@@ -29,6 +29,8 @@ extern "C" {
 // C++ includes
 #include "encoder.hpp"
 #include "modulator.hpp"
+#include "MicrosecondTimer.hpp"
+#include "VelocityObserver.hpp"
 
 #include "simulink_report.hpp"
 
@@ -40,6 +42,9 @@ extern AS5048 enc_0;
 
 extern DRV8301 modulator0;
 extern DRV8301 modulator1;
+
+extern MicrosecondsTimer timerUs;
+extern VelocityObserver vel_obs;
 
 typedef struct{
     float32_t enc_pos_0;
@@ -53,6 +58,7 @@ typedef struct{
 typedef struct{
     float32_t Idq0_sense[3];
     float32_t angle;
+    float32_t velocity_est;
 } Simulink_IDQ0_Packet_t;
 
 void componentInit();
@@ -62,5 +68,8 @@ void componentInit();
 // 1kHz
 extern "C" void updateEncoder();
 extern "C" void reportAbsoluteAngle();
+
+//Us timer clock
+extern "C" void updateMicrosecondTimer();
 
 #endif
